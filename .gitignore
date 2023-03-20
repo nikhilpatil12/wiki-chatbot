@@ -1,0 +1,43 @@
+bidaf*
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+chatbot-ui/dist
+chatbot-ui/tmp
+chatbot-ui/out-tsc
+chatbot-ui/bazel-out
+
+# Node
+chatbot-ui/node_modules
+chatbot-uinpm-debug.log
+chatbot-uiyarn-error.log
+
+# IDEs and editors
+chatbot-ui.idea/
+chatbot-ui.project
+chatbot-ui.classpath
+chatbot-ui.c9/
+chatbot-ui*.launch
+chatbot-ui.settings/
+chatbot-ui*.sublime-workspace
+
+# Visual Studio Code
+chatbot-ui.vscode/*
+chatbot-ui!.vscode/settings.json
+chatbot-ui!.vscode/tasks.json
+chatbot-ui!.vscode/launch.json
+chatbot-ui!.vscode/extensions.json
+chatbot-ui.history/*
+
+# Miscellaneous
+chatbot-ui/.angular/cache
+.sass-cache/
+chatbot-ui/connect.lock
+chatbot-ui/coverage
+chatbot-ui/libpeerconnection.log
+chatbot-uitestem.log
+chatbot-ui/typings
+
+# System files
+.DS_Store
+Thumbs.db

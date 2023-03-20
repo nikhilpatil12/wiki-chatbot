@@ -1,0 +1,46 @@
+<ng-container class="container" fullscreen>
+  <mat-toolbar color="primary">
+      <button (click)=sidenav.toggle() mat-icon-button class="icon" aria-label="Icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Chatbot</span>
+      <span class="spacer"></span>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="main-container">
+    <mat-sidenav #sidenav class="sidenav" mode="side" opened>
+      <div class="chat_history">
+        
+      </div>
+    </mat-sidenav>
+    
+    <mat-sidenav-content>
+      <div class="sidenav-content">
+        <div class="chatwindow">
+          <ul>
+            <li *ngFor="let message of messages" class="listChat">
+              {{ message.ts }}<br>
+              You
+              <div class="question">
+                {{ message.question }}
+              </div>
+              Bot
+              <div class="answer">
+                {{ message.answer }}
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="questionbox">
+            <mat-form-field class="form-field">
+              <mat-label>Ask me anything</mat-label>
+              <input matInput type="text" [(ngModel)]=this.newQuestion>
+              <button *ngIf="newQuestion" matSuffix mat-icon-button aria-label="Send" (click)="getAnswer()">
+                <mat-icon>send</mat-icon>
+              </button>
+            </mat-form-field>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-container>
