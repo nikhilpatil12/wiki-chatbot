@@ -32,6 +32,7 @@ def preprocess(question):
     tokens = word_tokenize(question)
     filtered_tokens = [lemmatizer.lemmatize(
         w.lower()) for w in tokens if not w in stop_words]
+    print("filtered_tokens")
     return filtered_tokens
 
 # Retrieve the Wikipedia page for the given question
@@ -39,6 +40,7 @@ def preprocess(question):
 
 def get_wiki_page(question):
     query = " ".join(preprocess(question))
+    print(query)
     try:
         page = wikipedia.page(query)
         return page.content
@@ -54,9 +56,12 @@ def extract_data(page_content):
     for sentence in sentences:
         doc = nlp(sentence)
         for ent in doc.ents:
-            if ent.dep_ in ["nsubj", "ROOT", "pobj",  "dobj"]:
+            if ent.label_ in ["GPE", "LOC", "ORG", "PERSON"]:
                 entities.append(ent.text)
-    print(sentences)
+        for entity in doc:
+            if entity.i >= doc[0].i and entity.i <= doc[-1].i:
+                if entity.dep_ in ["nsubj", "ROOT", "pobj",  "dobj", "nsubjpass"] and entity.text not in entities:
+                    entities.append(entity.text)
     return list(set(entities)), sentences
 
 # Answer the user's question using the extracted data
@@ -65,10 +70,22 @@ def extract_data(page_content):
 def answer_question(question, extracted_data):
     # Extract entities from the question
     question_doc = nlp(question)
+    print("question_doc.ents")
+    print(question_doc.ents)
     question_entities = []
     for ent in question_doc.ents:
-        if ent.dep_ in ["nsubj", "ROOT", "pobj",  "dobj"]:
+        print("ent.label_")
+        print(ent.label_)
+        if ent.label_ in ["GPE", "LOC", "ORG", "PERSON"]:
             question_entities.append(ent.text)
+    for entity in question_doc:
+        # print(ent)
+        if entity.i >= question_doc[0].i and entity.i <= question_doc[-1].i:
+            if entity.dep_ in ["nsubj", "ROOT", "pobj",  "dobj", "nsubjpass"] and entity.text not in question_entities:
+                question_entities.append(entity.text)
+
+    print("question_entities")
+    print(question_entities)
 
     # Find the sentence in the Wikipedia page that contains the most entities from the question
     max_entities = 0
@@ -77,10 +94,17 @@ def answer_question(question, extracted_data):
         doc = nlp(sentence)
         sentence_entities = []
         for ent in doc.ents:
-            if ent.dep_ in ["nsubj", "ROOT", "pobj",  "dobj"]:
+            if ent.label_ in ["GPE", "LOC", "ORG", "PERSON"]:
                 sentence_entities.append(ent.text)
+        for entity in doc:
+            # print(ent.dep_)
+            if entity.i >= doc[0].i and entity.i <= doc[-1].i:
+                if entity.dep_ in ["nsubj", "ROOT", "pobj",  "dobj", "nsubjpass"] and entity.text not in sentence_entities:
+                    sentence_entities.append(entity.text)
+        print(sentence_entities)
         num_entities = len(
             set(sentence_entities).intersection(set(question_entities)))
+        # print(num_entities)
         if num_entities > max_entities:
             max_entities = num_entities
             best_sentence = sentence
