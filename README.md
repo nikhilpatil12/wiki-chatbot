@@ -14,10 +14,16 @@ Simple Chatbot using NLTK and Wikipedia API
 ### Executing program
 
 * Execute "python app.py" to run the backend server
-* Change directory to chatbot-ui: cd chatbot-ui
-* Execute npm run start to start the frontend server: npm run start
 ```
-code blocks for commands
+python app.py
+```
+* Change directory to chatbot-ui:
+```
+cd chatbot-ui
+```
+* Execute npm run start to start the frontend server:
+```
+npm run start
 ```
 
 ## Authors
