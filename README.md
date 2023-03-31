@@ -39,3 +39,9 @@ This section should list any major frameworks/libraries used to bootstrap your p
 ## Version History
 * 0.1
     * Initial Release
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.io/
