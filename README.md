@@ -47,7 +47,7 @@ npm run start
 [Angular-url]: https://angular.io/
 [Python-logo]: https://img.shields.io/badge/Python-0066FF?style=for-the-badge&logo=python&logoColor=white
 [Python-url]: https://www.python.org/
-[Flask-logo]: https://img.shields.io/badge/Python-000?style=for-the-badge&logo=flask&logoColor=white
+[Flask-logo]: https://img.shields.io/badge/Flask-000?style=for-the-badge&logo=flask&logoColor=white
 [Flask-url]: https://flask.palletsprojects.com/en/2.2.x/
 [Mongo-logo]: https://img.shields.io/badge/MongoDB-009933?style=for-the-badge&logo=mongodb&logoColor=white
 [Mongo-url]: https://www.mongodb.com/
