@@ -27,10 +27,10 @@ npm run start
 ```
 
 ## Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-* [![Angular][Angular.io]][Angular-url]
+[![Angular][Angular-logo]][Angular-url]
+[![Python][Python-logo]][Python-url]
+[![Flask][Flask-logo]][Flask-url]
+[![Mongo][Mongo-logo]][Mongo-url]
 
 ## Authors
 * Nikhil Patil
@@ -43,5 +43,11 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-logo]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
 [Angular-url]: https://angular.io/
+[Python-logo]: https://img.shields.io/badge/Python-0066FF?style=for-the-badge&logo=python&logoColor=white
+[Python-url]: https://www.python.org/
+[Flask-logo]: https://img.shields.io/badge/Python-000?style=for-the-badge&logo=flask&logoColor=white
+[Flask-url]: https://flask.palletsprojects.com/en/2.2.x/
+[Mongo-logo]: https://img.shields.io/badge/MongoDB-009933?style=for-the-badge&logo=mongodb&logoColor=white
+[Mongo-url]: https://www.mongodb.com/
