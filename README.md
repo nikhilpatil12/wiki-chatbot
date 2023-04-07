@@ -1,8 +1,6 @@
 # Wiki Chatbot
 
-## Description
-
-##### Simple Chatbot using NLTK and Wikipedia API:
+## Simple Chatbot using NLTK and Wikipedia API:
 This chatbot is built using a combination of several technologies to create a robust and interactive user experience. Beautiful Soup is used for web scraping and data extraction, Flask is the web framework used to build the backend of the chatbot, while Python provides the core functionality for data processing and manipulation.
 
 For the frontend, CSS and JavaScript are utilized to create an attractive and responsive user interface that enables users to interact with the chatbot. Angular is a popular framework for building dynamic web applications and is used in this chatbot to provide seamless interactivity between the frontend and backend.
