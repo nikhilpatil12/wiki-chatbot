@@ -21,11 +21,11 @@ This chatbot is built using a combination of several technologies to create a ro
 ### Executing program
 
 * Clone this repository
-``bash
+```bash
 git clone https://github.com/nikhilpatil12/wiki-chatbot
 ```
 * cd into the downloded sourcecode
-``bash
+```bash
 cd wiki-chatbot
 ```
 * Install python requirements
