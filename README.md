@@ -20,34 +20,36 @@ This chatbot is built using a combination of several technologies to create a ro
 
 ### Executing program
 
-* Clone this repository
+1. Clone this repository
 ```bash
 git clone https://github.com/nikhilpatil12/wiki-chatbot
 ```
-* cd into the downloded sourcecode
+2. cd into the downloded sourcecode
 ```bash
 cd wiki-chatbot
 ```
-* Install python requirements
+3. Install python requirements
 ```bash
 pip install -r py-requirements.txt
 ```
-* Execute "python app.py" to run the backend server
+4. Execute "python app.py" to run the backend server
 ```bash
 python app.py
 ```
-* Change directory to chatbot-ui:
+5. Change directory to chatbot-ui:
 ```bash
 cd chatbot-ui
 ```
-* Run the following command to install the dependencies listed in the package.json file
+6. Run the following command to install the dependencies listed in the package.json file
 ```bash
 npm install
 ```
-* Once the installation is complete, run the following command to build the Angular app, Make sure you have Angular cli installed
+7. Once the installation is complete, run the following command to build the Angular app, Make sure you have Angular cli installed
 ```
-ng build --prod
+ng build --configuration production
 ```
+8. Use your server to run the web app
+
 
 ## Built With
 [![Angular][Angular-logo]][Angular-url]
