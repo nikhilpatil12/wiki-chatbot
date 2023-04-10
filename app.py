@@ -12,6 +12,7 @@ from flask_cors import CORS
 
 # Load Spacy NER
 nlp = spacy.load('en_core_web_sm')
+nltk.download('stopwords')
 
 # Create the Flask app
 app = Flask(__name__)
