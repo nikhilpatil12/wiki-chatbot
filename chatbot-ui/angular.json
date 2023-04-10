@@ -74,8 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "chatbot-ui:build",
-            "proxyConfig": "src/proxy.conf.json"
+            "browserTarget": "chatbot-ui:build"
           }
         },
         "test": {

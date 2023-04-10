@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, stream_with_context, Response
 from pymongo import MongoClient
 import wikipedia
 import nltk
@@ -8,12 +8,14 @@ from nltk.stem import WordNetLemmatizer
 import spacy
 import datetime
 import random
+from flask_cors import CORS
 
 # Load Spacy NER
 nlp = spacy.load('en_core_web_sm')
 
 # Create the Flask app
 app = Flask(__name__)
+CORS(app, origins=['http://localhost:62246'])
 
 client = MongoClient('localhost', 27017)
 
@@ -40,7 +42,7 @@ def preprocess(question):
 
 def get_wiki_page(question):
     query = " ".join(preprocess(question))
-    print(query)
+    print('Question Topic: '+query)
     try:
         page = wikipedia.page(query)
         return page.content
@@ -56,12 +58,16 @@ def extract_data(page_content):
     for sentence in sentences:
         doc = nlp(sentence)
         for ent in doc.ents:
+            print(ent)
             if ent.label_ in ["GPE", "LOC", "ORG", "PERSON"]:
                 entities.append(ent.text)
+                print('Extracted data: ' + ent.text)
+                yield f"Loading: \n".encode()
         for entity in doc:
             if entity.i >= doc[0].i and entity.i <= doc[-1].i:
                 if entity.dep_ in ["nsubj", "ROOT", "pobj",  "dobj", "nsubjpass"] and entity.text not in entities:
                     entities.append(entity.text)
+                    yield f"Loading: \n".encode()
     return list(set(entities)), sentences
 
 # Answer the user's question using the extracted data
@@ -78,11 +84,13 @@ def answer_question(question, extracted_data):
         print(ent.label_)
         if ent.label_ in ["GPE", "LOC", "ORG", "PERSON"]:
             question_entities.append(ent.text)
+            yield f"Question entity found: {ent.text} \n".encode()
     for entity in question_doc:
         # print(ent)
         if entity.i >= question_doc[0].i and entity.i <= question_doc[-1].i:
             if entity.dep_ in ["nsubj", "ROOT", "pobj",  "dobj", "nsubjpass"] and entity.text not in question_entities:
                 question_entities.append(entity.text)
+                yield f"Question entity found: {entity.text} \n".encode()
 
     print("question_entities")
     print(question_entities)
@@ -96,21 +104,26 @@ def answer_question(question, extracted_data):
         for ent in doc.ents:
             if ent.label_ in ["GPE", "LOC", "ORG", "PERSON"]:
                 sentence_entities.append(ent.text)
+                # yield 'Answer entity found: ' + ent.text + '\n'
         for entity in doc:
             # print(ent.dep_)
             if entity.i >= doc[0].i and entity.i <= doc[-1].i:
                 if entity.dep_ in ["nsubj", "ROOT", "pobj",  "dobj", "nsubjpass"] and entity.text not in sentence_entities:
                     sentence_entities.append(entity.text)
+                    # yield 'Answer entity found: ' + entity.text + '\n'
         print(sentence_entities)
+        # yield str(list(set(sentence_entities).intersection(set(question_entities)))).encode()
         num_entities = len(
             set(sentence_entities).intersection(set(question_entities)))
-        # print(num_entities)
+        print(num_entities)
         if num_entities > max_entities:
             max_entities = num_entities
             best_sentence = sentence
+            yield f"[{str(num_entities)}] Possible Answer: {str(sentence)} \n".encode()
 
     # If a sentence with at least one entity from the question is found, return the sentence
     if max_entities > 0:
+        yield f"Answer: {str(best_sentence)} \n".encode()
         return best_sentence
 
     # If no match is found, return random.choice(errors)
@@ -119,29 +132,56 @@ def answer_question(question, extracted_data):
 # Define the API route
 
 
-@app.route('/api/answer', methods=['POST'])
+@app.route('/api/answer', methods=['POST', 'OPTIONS'])
 def answer():
     try:
-        # Get the user's question from the request body
-        data = request.json
-        question = data['question']
+        if request.method == 'OPTIONS':
+            response = Response()
+            response.headers.add(
+                'Access-Control-Allow-Origin', 'localhost:4200')
+            response.headers.add(
+                'Access-Control-Allow-Methods', 'POST, OPTIONS')
+            response.headers.add(
+                'Access-Control-Allow-Headers', 'Content-Type')
+            return response
+        if request.method == 'POST':
+            # Get the user's question from the request body
+            data = request.json
+            question = data['question']
+            # Stream extracted data from extract_data()
 
-        # Get the Wikipedia page for the question
-        page_content = get_wiki_page(question)
+            def generate():
+                # Get the Wikipedia page for the question
+                page_content = get_wiki_page(question)
+                # Extract the relevant data
+                extracted_data = yield from extract_data(page_content)
+                # yield str(extracted_data)
+                # print(extracted_data)
 
-        # Extract the relevant data
-        extracted_data = extract_data(page_content)
+                # Answer the user's question
+                answer = yield from answer_question(question, extracted_data)
 
-        # Answer the user's question
-        answer = answer_question(question, extracted_data)
+                # ts stores the time in seconds
+                ts = datetime.datetime.now()
 
-        # ts stores the time in seconds
-        ts = datetime.datetime.now()
+                history.insert_one(
+                    {'question': question, 'answer': answer, 'ts': ts})
 
-        history.insert_one({'question': question, 'answer': answer, 'ts': ts})
+            # return Response(stream_with_context(generate()), mimetype='text/plain'), jsonify({'question': question, 'answer': answer, 'ts': ts})
+            response = Response(stream_with_context(
+                generate()), content_type='text/event-stream', mimetype='text/plain')
+            response.headers.add('Access-Control-Allow-Origin',
+                                 '*')
+            response.headers.add('Transfer-Encoding', 'chunked')
+            response.status_code = 200
+            response.direct_passthrough = True
+            response.headers.add(
+                'Access-Control-Allow-Methods', 'POST, OPTIONS')
+            response.headers.add(
+                'Access-Control-Allow-Headers', 'Content-Type')
+            # response.implicit_sequence_conversion = True
+            return response
 
-        # Return the answer as a JSON response
-        return jsonify({'question': question, 'answer': answer, 'ts': ts})
     except:
         question = data['question']
         ts = datetime.datetime.now()
@@ -149,7 +189,8 @@ def answer():
         err = random.choice(errors)
         history.insert_one({'question': question, 'answer': err, 'ts': ts})
         response = jsonify({'question': question, 'error': err})
-        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Origin',
+                             'http://localhost:55752')
         return response
 
 
