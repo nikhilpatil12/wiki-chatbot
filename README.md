@@ -36,9 +36,9 @@ pip install -r py-requirements.txt
 ```bash 
 python -m spacy download en_core_web_sm
 ```
-5. Execute "python app.py" to run the backend server
+5. Execute "gunicorn wsgi:app" to run the backend server
 ```bash
-python app.py
+gunicorn wsgi:app
 ```
 6. Change directory to chatbot-ui:
 ```bash
