@@ -41,3 +41,4 @@ chatbot-ui/typings
 # System files
 .DS_Store
 Thumbs.db
+*.pyc
