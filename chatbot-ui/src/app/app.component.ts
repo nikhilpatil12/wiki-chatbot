@@ -18,7 +18,7 @@ export class AppComponent {
   title = 'chatbot-ui';
   showFiller = true;
 
-  // url = 'http://127.0.0.1:5000/answer';
+  // url = 'http://127.0.0.1:8000/answer';
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json'
@@ -28,7 +28,7 @@ export class AppComponent {
   //   var q = {"question": this.newQuestion}
   //   console.log(q)
   //   return this.http.post<T>(
-  //     'http://127.0.0.1:5000/answer',
+  //     'http://127.0.0.1:8000/answer',
   //     JSON.stringify(q),
   //     {headers: this.headers}
   //   )
@@ -37,7 +37,7 @@ export class AppComponent {
   getAnswer() {
     const that = this;
     this.extractedData = ''
-    // this.http.post('http://127.0.0.1:5000/api/answer', { "question": this.newQuestion }, { responseType: 'text', observe: 'response' })
+    // this.http.post('http://127.0.0.1:8000/api/answer', { "question": this.newQuestion }, { responseType: 'text', observe: 'response' })
     // // .pipe(tap(chunk => {
     // //   console.log(chunk)
     // // }))
