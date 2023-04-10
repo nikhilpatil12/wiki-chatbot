@@ -32,23 +32,27 @@ cd wiki-chatbot
 ```bash
 pip install -r py-requirements.txt
 ```
-4. Execute "python app.py" to run the backend server
+4. Install en_core_web_sm model
+```bash 
+python -m spacy download en_core_web_sm
+```
+5. Execute "python app.py" to run the backend server
 ```bash
 python app.py
 ```
-5. Change directory to chatbot-ui:
+6. Change directory to chatbot-ui:
 ```bash
 cd chatbot-ui
 ```
-6. Run the following command to install the dependencies listed in the package.json file
+7. Run the following command to install the dependencies listed in the package.json file
 ```bash
 npm install
 ```
-7. Once the installation is complete, run the following command to build the Angular app, Make sure you have Angular cli installed
+8. Once the installation is complete, run the following command to build the Angular app, Make sure you have Angular cli installed
 ```
 ng build --configuration production
 ```
-8. Use your server to run the web app
+9. Use your server to run the web app
 
 
 ## Built With
