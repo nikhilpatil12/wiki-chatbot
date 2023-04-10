@@ -44,7 +44,7 @@ cd chatbot-ui
 ```bash
 npm install
 ```
-* Once the installation is complete, run the following command to build the Angular app
+* Once the installation is complete, run the following command to build the Angular app, Make sure you have Angular cli installed
 ```
 ng build --prod
 ```
