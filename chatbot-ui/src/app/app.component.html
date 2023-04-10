@@ -20,7 +20,7 @@
 
       </div>
     </mat-sidenav>
-    <mat-sidenav #sidenav2 class="sidenav2" mode="side" opened position="end">
+    <mat-sidenav *ngIf="extractedData" #sidenav2 class="sidenav2" mode="side" opened position="end">
       <div class="question_stats">
         <div id="stream_head">
           <h2>Question Stats</h2>
