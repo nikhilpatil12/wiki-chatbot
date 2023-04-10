@@ -6,11 +6,8 @@ This chatbot is built using a combination of several technologies to create a ro
 * Flask: A lightweight web framework used to build the backend of the chatbot.
 * Python: The programming language that provides the core functionality for data processing and manipulation.
 * Angular: A popular framework for building dynamic web applications, used to provide seamless interactivity between the frontend and backend.
-Finally, the following technology is used for data storage and management:
-
 * MongoDB: A NoSQL database used to store and manage user data and chat histories.
 
-###### The combination of these technologies allows for a smooth and intuitive chatbot experience that can be customized to meet specific business needs, such as providing customer support, automating sales, or assisting with various business operations.
 ---
 ## Getting Started
 
