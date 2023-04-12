@@ -50,7 +50,7 @@ npm install
 ```
 8. Once the installation is complete, run the following command to build the Angular app, Make sure you have Angular cli installed
 ```
-ng build --configuration production
+ng serve -o
 ```
 9. Use your server to run the web app
 
