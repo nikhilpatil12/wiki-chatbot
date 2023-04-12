@@ -1,17 +1,14 @@
 {
     "/api/*": {
-        "target": "http://localhost:8000",
-        "secure": false,
+        "target": "https://oci.nikpatil.com",
         "logLevel": "debug"
     },
     "http://127.0.0.1:*/api/*": {
-        "target": "http://localhost:8000",
-        "secure": false,
+        "target": "https://oci.nikpatil.com",
         "logLevel": "debug"
     },
     "localhost:*/api/*": {
-        "target": "http://localhost:8000",
-        "secure": false,
+        "target": "https://oci.nikpatil.com",
         "logLevel": "debug"
     }
 }
