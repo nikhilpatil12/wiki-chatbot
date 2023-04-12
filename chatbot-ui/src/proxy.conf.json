@@ -1,14 +1,6 @@
 {
     "/api/*": {
-        "target": "https://oci.nikpatil.com",
-        "logLevel": "debug"
-    },
-    "http://127.0.0.1:*/api/*": {
-        "target": "https://oci.nikpatil.com",
-        "logLevel": "debug"
-    },
-    "localhost:*/api/*": {
-        "target": "https://oci.nikpatil.com",
+        "target": "http://localhost:5000/",
         "logLevel": "debug"
     }
 }

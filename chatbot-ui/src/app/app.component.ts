@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { interval } from 'rxjs';
 import { Chat } from './chat';
 import { tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,7 @@ export class AppComponent {
   title = 'chatbot-ui';
   showFiller = true;
 
-  url = 'https://oci.nikpatil.com';
+  private url = environment.apiUrl;
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json'
