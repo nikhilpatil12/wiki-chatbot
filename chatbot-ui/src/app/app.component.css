@@ -43,7 +43,7 @@
 
 .chatwindow {
     width: 100%;
-    max-height: calc(100vh - 21vh);
+    height: calc(100vh - 21vh);
     margin: 20px;
 }
 
@@ -106,6 +106,6 @@ li {
 #stream {
     height: 100%;
     right: 0;
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
     overflow: auto;
 }

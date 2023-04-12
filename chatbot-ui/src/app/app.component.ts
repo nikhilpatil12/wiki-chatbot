@@ -1,21 +1,38 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { interval } from 'rxjs';
-import { Chat } from './chat';
+import { ChatMessage } from './ChatMessage';
+import { ChatThread } from './ChatThread'
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-
+import { NewchatDialogComponent } from './newchat-dialog/newchat-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ChatMessagesResponse } from './ChatMessageResponse';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  messages: Chat[] = [];
+  chatMessages: ChatMessage[] = [];
+  chatThreads: ChatThread[] = [];
+  currentThread = "";
+  chatname: string = '';
   newQuestion: string | undefined;
   extractedData: string = '';
-  constructor(protected http: HttpClient) {}
+  constructor(protected http: HttpClient, public dialog: MatDialog) { }
+  openNewChatDialog(): void {
+    const dialogRef = this.dialog.open(NewchatDialogComponent, {
+      data: { name: this.chatname },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+      this.currentThread = result;
+    });
+  }
   title = 'chatbot-ui';
   showFiller = true;
 
@@ -25,42 +42,20 @@ export class AppComponent {
     'Content-Type': 'application/json'
   });
 
-  // getAnswer<T>(): Observable<T> {
-  //   var q = {"question": this.newQuestion}
-  //   console.log(q)
-  //   return this.http.post<T>(
-  //     'http://127.0.0.1:8000/answer',
-  //     JSON.stringify(q),
-  //     {headers: this.headers}
-  //   )
-  // }
+  setThread(th: string) {
+    this.currentThread = th;
+  }
 
   getAnswer() {
     const that = this;
     this.extractedData = ''
-    // this.http.post('http://127.0.0.1:8000/api/answer', { "question": this.newQuestion }, { responseType: 'text', observe: 'response' })
-    // // .pipe(tap(chunk => {
-    // //   console.log(chunk)
-    // // }))
-    // // .subscribe(data => {
-      
-    // //   this.extractedData += data;
-    // //   console.log(data)
-    // // });
-    // .subscribe({
-    //   next: chunk => {
-    //     this.extractedData += chunk;
-    //     console.log(chunk)
-    //   },
-    //   error: error => console.error(error),
-    //   complete: () => console.log('Stream completed')
-    // })
+
     const req = new XMLHttpRequest();
-    req.open('POST', this.url+'/api/answer');
+    req.open('POST', this.url + '/api/answer');
     req.setRequestHeader('Content-Type', 'application/json');
     req.responseType = 'text';
-    const data = { "question": this.newQuestion };
-    req.onreadystatechange = function() {
+    const data = { "question": this.newQuestion, "thread": this.currentThread };
+    req.onreadystatechange = function () {
       if (this.status === 200) {
         const response = this.responseText;
         that.extractedData = response + "<br>";
@@ -88,12 +83,34 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    this.currentThread = "Default";
     interval(1000).subscribe(() => {
-      this.http.get(this.url+'/api/history').subscribe((data: any) => {
-        this.messages = data;
+      this.http.get<ChatMessagesResponse>(this.url + '/api/history').subscribe(data => {
+        console.log(data)
+        // this.messages = data;
+        const groupedMessages = this.groupByThread(data);
+
+        // Convert the grouped messages to an array of chat threads
+        this.chatThreads = Object.keys(groupedMessages).map(thread => {
+          return { thread, messages: groupedMessages[thread] };
+        });
+        this.chatMessages = groupedMessages[this.currentThread];
       });
     });
   }
 
+  private groupByThread(messages: ChatMessagesResponse): { [thread: string]: ChatMessage[] } {
+    const result: { [thread: string]: ChatMessage[] } = {};
+    Object.keys(messages).forEach(thread => {
+      messages[thread].forEach(message => {
+        if (result[thread]) {
+          result[thread].push(message);
+        } else {
+          result[thread] = [message];
+        }
+      });
+    });
+    return result;
+  }
+
 }
- 

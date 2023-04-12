@@ -10,10 +10,21 @@
   <mat-sidenav-container class="main-container">
     <mat-sidenav #sidenav class="sidenav" mode="side" opened>
       <div>
-        <button mat-stroked-button id="new-chat-button" color="accent">
+        <button mat-stroked-button id="new-chat-button" (click)="openNewChatDialog()" color="accent">
           <mat-icon aria-hidden="false" aria-label="New Chat Button" fontIcon="add"></mat-icon>
           New Chat
         </button>
+        <div>
+          <mat-list role="list">
+            <div *ngFor="let thread of chatThreads" matRipple (click)="setThread(thread.thread)">
+              <mat-list-item class="chat-thread" role="listitem">
+                {{thread.thread}}
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </div>
+          </mat-list>
+        </div>
+
 
       </div>
       <div class="chat_history">
@@ -36,7 +47,7 @@
       <div class="sidenav-content">
         <div class="chatwindow">
           <ul>
-            <li *ngFor="let message of messages" class="listChat">
+            <li *ngFor="let message of chatMessages" class="listChat">
               <span>{{ message.ts }}<br></span>
               You
               <div class="question">

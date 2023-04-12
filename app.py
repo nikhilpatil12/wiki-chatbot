@@ -151,6 +151,7 @@ def answer():
             # Get the user's question from the request body
             data = request.json
             question = data['question']
+            thread = data['thread']
             # Stream extracted data from extract_data()
 
             def generate():
@@ -168,7 +169,7 @@ def answer():
                 ts = datetime.datetime.now()
 
                 history.insert_one(
-                    {'question': question, 'answer': answer, 'ts': ts})
+                    {'question': question, 'answer': answer, 'ts': ts, 'thread': thread})
 
             # return Response(stream_with_context(generate()), mimetype='text/plain'), jsonify({'question': question, 'answer': answer, 'ts': ts})
             response = Response(stream_with_context(
@@ -190,8 +191,10 @@ def answer():
         ts = datetime.datetime.now()
 
         err = random.choice(errors)
-        history.insert_one({'question': question, 'answer': err, 'ts': ts})
-        response = jsonify({'question': question, 'error': err})
+        history.insert_one(
+            {'question': question, 'answer': err, 'ts': ts, 'thread': thread})
+        response = jsonify(
+            {'question': question, 'error': err, 'ts': ts, 'thread': thread})
         response.headers.add('Access-Control-Allow-Origin',
                              '*')
         return response
@@ -203,11 +206,33 @@ def hist():
     chat_history = history.find()
     ch = []
     for chat in chat_history:
+        thread = "Default"
+        if 'thread' in chat:
+            if chat['thread'] != "":
+                thread = chat['thread']
+
         ch.append({'question': chat['question'],
-                  'answer': chat['answer'], 'ts': chat['ts']})
-    response = jsonify(ch)
+                  'answer': chat['answer'],
+                   'ts': chat['ts'],
+                   'thread': thread})
+    chatdict = arrange_by_thread(ch)
+    response = jsonify(chatdict)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
+
+def arrange_by_thread(chat_list):
+    chat_dict = {}
+    for chat in chat_list:
+        thread = chat['thread']
+        if thread not in chat_dict:
+            chat_dict[thread] = []
+        chat_dict[thread].append({
+            'question': chat['question'],
+            'answer': chat['answer'],
+            'ts': chat['ts']
+        })
+    return chat_dict
 
 
 if __name__ == '__main__':
