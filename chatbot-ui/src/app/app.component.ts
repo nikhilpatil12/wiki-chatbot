@@ -18,7 +18,7 @@ export class AppComponent {
   title = 'chatbot-ui';
   showFiller = true;
 
-  // url = 'http://127.0.0.1:8000/answer';
+  url = 'https://oci.nikpatil.com';
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ export class AppComponent {
     //   complete: () => console.log('Stream completed')
     // })
     const req = new XMLHttpRequest();
-    req.open('POST', '/api/answer');
+    req.open('POST', this.url+'/api/answer');
     req.setRequestHeader('Content-Type', 'application/json');
     req.responseType = 'text';
     const data = { "question": this.newQuestion };
@@ -88,7 +88,7 @@ export class AppComponent {
 
   ngOnInit() {
     interval(1000).subscribe(() => {
-      this.http.get('/api/history').subscribe((data: any) => {
+      this.http.get(this.url+'/api/history').subscribe((data: any) => {
         this.messages = data;
       });
     });

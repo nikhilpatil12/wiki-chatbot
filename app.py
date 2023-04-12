@@ -18,7 +18,7 @@ nltk.download('wordnet')
 
 # Create the Flask app
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:62246'])
+CORS(app, origins=['http://localhost:4200', 'https://oci.nikpatil.com'])
 
 client = MongoClient('localhost', 27017)
 
@@ -141,7 +141,7 @@ def answer():
         if request.method == 'OPTIONS':
             response = Response()
             response.headers.add(
-                'Access-Control-Allow-Origin', 'localhost:4200')
+                'Access-Control-Allow-Origin', 'https://oci.nikpatil.com')
             response.headers.add(
                 'Access-Control-Allow-Methods', 'POST, OPTIONS')
             response.headers.add(
@@ -193,7 +193,7 @@ def answer():
         history.insert_one({'question': question, 'answer': err, 'ts': ts})
         response = jsonify({'question': question, 'error': err})
         response.headers.add('Access-Control-Allow-Origin',
-                             'http://localhost:55752')
+                             'https://oci.nikpatil.com')
         return response
 
 
