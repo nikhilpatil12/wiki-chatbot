@@ -141,7 +141,7 @@ def answer():
         if request.method == 'OPTIONS':
             response = Response()
             response.headers.add(
-                'Access-Control-Allow-Origin', 'https://oci.nikpatil.com')
+                'Access-Control-Allow-Origin', '*')
             response.headers.add(
                 'Access-Control-Allow-Methods', 'POST, OPTIONS')
             response.headers.add(
@@ -193,7 +193,7 @@ def answer():
         history.insert_one({'question': question, 'answer': err, 'ts': ts})
         response = jsonify({'question': question, 'error': err})
         response.headers.add('Access-Control-Allow-Origin',
-                             'https://oci.nikpatil.com')
+                             '*')
         return response
 
 
