@@ -18,7 +18,7 @@ nltk.download('wordnet')
 
 # Create the Flask app
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:4200', 'https://oci.nikpatil.com'])
+CORS(app, origins=['*'])
 
 client = MongoClient('localhost', 27017)
 
