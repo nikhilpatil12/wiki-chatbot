@@ -48,6 +48,7 @@
 
 .lichat {
     padding: 15px;
+    width: 100%;
     margin: 0;
     overflow: auto;
     height: calc(100% - 114px);
