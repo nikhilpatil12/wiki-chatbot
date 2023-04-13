@@ -17,6 +17,7 @@ import { ChatMessagesResponse } from './ChatMessageResponse';
 export class AppComponent {
   chatMessages: ChatMessage[] = [];
   chatThreads: ChatThread[] = [];
+  newChatThread = false;
   currentThread = "";
   chatname: string = '';
   newQuestion: string | undefined;
@@ -30,7 +31,17 @@ export class AppComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       console.log(result);
-      this.currentThread = result;
+      if (result) {
+        this.currentThread = result;
+        const threadIndex = this.chatThreads.findIndex(thread => thread.thread === result);
+        console.log(threadIndex)
+        if (threadIndex == -1) {
+          this.newChatThread = true
+        } else {
+          this.newChatThread = false
+
+        }
+      }
     });
   }
   title = 'chatbot-ui';
@@ -44,6 +55,7 @@ export class AppComponent {
 
   setThread(th: string) {
     this.currentThread = th;
+    this.newChatThread = false;
   }
 
   getAnswer() {

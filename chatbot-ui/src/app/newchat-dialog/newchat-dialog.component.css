@@ -1,0 +1,16 @@
+.dialog-actions {
+    padding: 25px;
+    width: 100%;
+    /* right: 0; */
+    display: inline-block;
+    /* align-self: end; */
+    text-align: right;
+}
+
+.dialog-container {
+    width: 40vw;
+}
+
+.dialog-input {
+    width: 100%;
+}

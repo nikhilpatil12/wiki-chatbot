@@ -16,6 +16,12 @@
         </button>
         <div>
           <mat-list role="list">
+            <div *ngIf="newChatThread" matRipple>
+              <mat-list-item class="chat-thread" role="listitem">
+                {{currentThread}}
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </div>
             <div *ngFor="let thread of chatThreads" matRipple (click)="setThread(thread.thread)">
               <mat-list-item class="chat-thread" role="listitem">
                 {{thread.thread}}
@@ -44,8 +50,8 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <div class="sidenav-content">
-        <div class="chatwindow">
+      <div class="sidenav-content chatwindow">
+        <div class="row lichat">
           <ul>
             <li *ngFor="let message of chatMessages" class="listChat">
               <span>{{ message.ts }}<br></span>
@@ -60,7 +66,7 @@
             </li>
           </ul>
         </div>
-        <div class="questionbox">
+        <div class="row questionbox">
           <mat-form-field class="form-field">
             <mat-label>Ask me anything</mat-label>
             <input matInput type="text" title="New question input" [(ngModel)]=this.newQuestion>

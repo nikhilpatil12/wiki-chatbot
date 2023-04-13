@@ -1,6 +1,6 @@
 .container {
     width: 100%;
-    min-height: 100vh;
+    /* min-height: 100vh; */
 }
 
 .spacer {
@@ -9,7 +9,7 @@
 
 .main-container {
     width: 100%;
-    max-height: 100%;
+    height: calc(100% - 64px);
 }
 
 #new-chat-button {
@@ -35,6 +35,25 @@
     justify-content: left;
 }
 
+/* Styles for screens smaller than 768px */
+@media (max-width: 767px) {
+    .sidenav {
+        width: 100%;
+    }
+
+    /* .chatwindow {
+        height: calc(100vh - 25vh);
+    } */
+}
+
+.lichat {
+    padding: 15px;
+    margin: 0;
+    overflow: auto;
+    height: calc(100% - 114px);
+    top: 0;
+}
+
 .sidenav2 {
     min-width: 15vw;
     max-width: 18vw;
@@ -43,25 +62,32 @@
 
 .chatwindow {
     width: 100%;
-    height: calc(100vh - 21vh);
-    margin: 20px;
+    overflow: auto;
+    height: inherit;
+    align-items: baseline;
+    /* margin: 20px 0; */
 }
 
 .questionbox {
-    width: 100%;
-    position: fixed;
+    width: inherit;
+    position: absolute;
     bottom: 0;
     right: 0;
-    display: block;
+    /* display: block; */
+    z-index: 100;
+    background-color: rgb(53, 55, 64);
+    /* margin: 10px; */
+    padding-top: 10px;
 }
 
 .form-field {
     width: calc(100% - 40px);
     margin: 0 20px;
+    height: 100%;
 }
 
 .listChat {
-    margin: 40px;
+    margin: 40px 0;
 }
 
 .question {
