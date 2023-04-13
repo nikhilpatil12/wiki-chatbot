@@ -36,9 +36,9 @@ pip install -r py-requirements.txt
 ```bash 
 python -m spacy download en_core_web_sm
 ```
-5. Execute "gunicorn wsgi:app" to run the backend server
+5. Execute "python app.py" to run the backend dev server
 ```bash
-gunicorn wsgi:app
+python app.py
 ```
 6. Change directory to chatbot-ui:
 ```bash
@@ -48,7 +48,7 @@ cd chatbot-ui
 ```bash
 npm install
 ```
-8. Once the installation is complete, run the following command to run the Angular app, Make sure you have Angular cli installed
+8. Once the installation is complete, run the following command to run the Angular dev server, Make sure you have Angular cli installed
 ```
 ng serve -o
 ```
