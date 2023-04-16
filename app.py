@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, stream_with_context, Response
-from flask_socketio import SocketIO, emit
 from pymongo import MongoClient
 import wikipedia
 import nltk
@@ -19,7 +18,6 @@ nltk.download('wordnet')
 
 # Create the Flask app
 app = Flask(__name__)
-socketio = SocketIO(app)
 CORS(app, origins=['*'])
 
 client = MongoClient('localhost', 27017)
@@ -198,15 +196,6 @@ def answer():
         response.headers.add('Access-Control-Allow-Origin',
                              '*')
         return response
-
-
-@socketio.on('connect')
-def handle_connect():
-    # Subscribe to MongoDB change stream
-    change_stream = history.watch()
-    for change in change_stream:
-        # Emit a SocketIO event with the updated data
-        emit('data_update', change['fullDocument'])
 
 
 @app.route('/api/history', methods=['GET'])

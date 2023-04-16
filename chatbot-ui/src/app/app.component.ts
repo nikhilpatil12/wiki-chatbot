@@ -99,35 +99,26 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    // Establish a WebSocket connection
-    this.socket = io();
-    // Listen for the 'data_update' event
-    this.socket.on('data_update', (data: ChatMessagesResponse) => {
-      // Handle the updated data
-      console.log(data);
-      const groupedMessages = this.groupByThread(data);
-
-      // Convert the grouped messages to an array of chat threads
-      this.chatThreads = Object.keys(groupedMessages).map(thread => {
-        return { thread, messages: groupedMessages[thread] };
-      });
-      this.chatMessages = groupedMessages[this.currentThread];
-    });
 
     this.currentThread = "Default";
-    // interval(1000).subscribe(() => {
-    this.http.get<ChatMessagesResponse>(this.url + '/api/history').subscribe(data => {
-      console.log(data)
-      // this.messages = data;
-      const groupedMessages = this.groupByThread(data);
+    var pastdata: ChatMessagesResponse;
+    interval(1000).subscribe(() => {
+      this.http.get<ChatMessagesResponse>(this.url + '/api/history').subscribe(data => {
+        console.log(data)
+        if (JSON.stringify(data) === JSON.stringify(pastdata)) {
+        }
+        else {
+          // this.messages = data;
+          const groupedMessages = this.groupByThread(data);
 
-      // Convert the grouped messages to an array of chat threads
-      this.chatThreads = Object.keys(groupedMessages).map(thread => {
-        return { thread, messages: groupedMessages[thread] };
+          // Convert the grouped messages to an array of chat threads
+          this.chatThreads = Object.keys(groupedMessages).map(thread => {
+            return { thread, messages: groupedMessages[thread] };
+          });
+          this.chatMessages = groupedMessages[this.currentThread];
+        }
       });
-      this.chatMessages = groupedMessages[this.currentThread];
     });
-    // });
   }
 
   private groupByThread(messages: ChatMessagesResponse): { [thread: string]: ChatMessage[] } {
