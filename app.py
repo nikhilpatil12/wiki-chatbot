@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, stream_with_context, Response
+from flask_socketio import SocketIO, emit
 from pymongo import MongoClient
 import wikipedia
 import nltk
@@ -18,6 +19,7 @@ nltk.download('wordnet')
 
 # Create the Flask app
 app = Flask(__name__)
+socketio = SocketIO(app)
 CORS(app, origins=['*'])
 
 client = MongoClient('localhost', 27017)
@@ -171,7 +173,6 @@ def answer():
                 history.insert_one(
                     {'question': question, 'answer': answer, 'ts': ts, 'thread': thread})
 
-            # return Response(stream_with_context(generate()), mimetype='text/plain'), jsonify({'question': question, 'answer': answer, 'ts': ts})
             response = Response(stream_with_context(
                 generate()), content_type='text/event-stream', mimetype='text/plain')
             response.headers.add('Access-Control-Allow-Origin',
@@ -183,7 +184,6 @@ def answer():
                 'Access-Control-Allow-Methods', 'POST, OPTIONS')
             response.headers.add(
                 'Access-Control-Allow-Headers', 'Content-Type')
-            # response.implicit_sequence_conversion = True
             return response
 
     except:
@@ -200,7 +200,15 @@ def answer():
         return response
 
 
-# Define the API route
+@socketio.on('connect')
+def handle_connect():
+    # Subscribe to MongoDB change stream
+    change_stream = history.watch()
+    for change in change_stream:
+        # Emit a SocketIO event with the updated data
+        emit('data_update', change['fullDocument'])
+
+
 @app.route('/api/history', methods=['GET'])
 def hist():
     chat_history = history.find()
