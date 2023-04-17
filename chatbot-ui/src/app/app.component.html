@@ -39,9 +39,17 @@
     </mat-sidenav>
     <mat-sidenav *ngIf="extractedData" #sidenav2 class="sidenav2" mode="side" opened position="end">
       <div class="question_stats">
-        <div id="stream_head">
-          <h2>Question Stats</h2>
-        </div>
+        <mat-card>
+          <mat-card-content>
+            <h2>Question Stats</h2>
+            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-card-content>
+        </mat-card>
+        <!-- <div id="stream_head">
+          
+        </div> -->
         <div id="stream">
           {{extractedData}}
         </div>
@@ -51,7 +59,7 @@
 
     <mat-sidenav-content>
       <div class="sidenav-content chatwindow">
-        <div class="row lichat">
+        <div class="row lichat" #answerHistory>
           <ul>
             <li *ngFor="let message of chatMessages" class="listChat">
               <span>{{ message.ts }}<br></span>
@@ -59,7 +67,7 @@
               <div class="question">
                 <span>{{ message.question }}</span>
               </div>
-              Bot
+              WikiBot
               <div class="answer">
                 <span>{{ message.answer }}</span>
               </div>
@@ -69,7 +77,8 @@
         <div class="row questionbox">
           <mat-form-field class="form-field">
             <mat-label>Ask me anything</mat-label>
-            <input matInput type="text" title="New question input" [(ngModel)]=this.newQuestion>
+            <input (keyup.enter)="getAnswer()" matInput type="text" title="New question input"
+              [(ngModel)]=this.newQuestion>
             <button *ngIf="newQuestion" matSuffix mat-icon-button aria-label="Send" (click)="getAnswer()">
               <mat-icon>send</mat-icon>
             </button>

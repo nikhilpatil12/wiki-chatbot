@@ -133,6 +133,7 @@ li {
 #stream {
     height: 100%;
     right: 0;
+    position: relative;
     /* background-color: blueviolet; */
     overflow: auto;
 }

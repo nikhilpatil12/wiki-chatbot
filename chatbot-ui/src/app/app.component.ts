@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { interval } from 'rxjs';
 import { ChatMessage } from './ChatMessage';
@@ -9,14 +9,15 @@ import { environment } from 'src/environments/environment';
 import { NewchatDialogComponent } from './newchat-dialog/newchat-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatMessagesResponse } from './ChatMessageResponse';
-import { io } from 'socket.io-client';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  private socket: any;
+  @ViewChild('answerHistory', { static: true })
+  answerHistory!: ElementRef;
+
   chatMessages: ChatMessage[] = [];
   chatThreads: ChatThread[] = [];
   newChatThread = false;
@@ -24,6 +25,7 @@ export class AppComponent {
   chatname: string = '';
   newQuestion: string | undefined;
   extractedData: string = '';
+  pastdata: string = '';
   constructor(protected http: HttpClient, public dialog: MatDialog) { }
   openNewChatDialog(): void {
     const dialogRef = this.dialog.open(NewchatDialogComponent, {
@@ -99,28 +101,30 @@ export class AppComponent {
   }
 
   ngOnInit() {
-
     this.currentThread = "Default";
-    var pastdata: ChatMessagesResponse;
     interval(1000).subscribe(() => {
-      this.http.get<ChatMessagesResponse>(this.url + '/api/history').subscribe(data => {
-        console.log(data)
-        if (JSON.stringify(data) === JSON.stringify(pastdata)) {
-        }
-        else {
-          // this.messages = data;
-          const groupedMessages = this.groupByThread(data);
-
-          // Convert the grouped messages to an array of chat threads
-          this.chatThreads = Object.keys(groupedMessages).map(thread => {
-            return { thread, messages: groupedMessages[thread] };
-          });
-          this.chatMessages = groupedMessages[this.currentThread];
-        }
-      });
+      this.getHistory();
     });
   }
+  public getHistory = () => {
+    this.http.get<ChatMessagesResponse>(this.url + '/api/history').subscribe(data => {
+      console.log(data)
+      // this.messages = data;
+      const groupedMessages = this.groupByThread(data);
+      // Convert the grouped messages to an array of chat threads
+      this.chatThreads = Object.keys(groupedMessages).map(thread => {
+        return { thread, messages: groupedMessages[thread] };
+      });
+      var cm = groupedMessages[this.currentThread];
+      if (JSON.stringify(cm) !== this.pastdata) {
+        this.pastdata = JSON.stringify(cm);
+        this.chatMessages = groupedMessages[this.currentThread];
 
+        // Set the scrollTop property to the height of the div
+        this.answerHistory.nativeElement.scrollTop = this.answerHistory.nativeElement.scrollHeight;
+      }
+    });
+  }
   private groupByThread(messages: ChatMessagesResponse): { [thread: string]: ChatMessage[] } {
     const result: { [thread: string]: ChatMessage[] } = {};
     Object.keys(messages).forEach(thread => {

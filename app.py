@@ -151,25 +151,30 @@ def answer():
             # Get the user's question from the request body
             data = request.json
             question = data['question']
+            model = data['model']
             thread = data['thread']
             # Stream extracted data from extract_data()
 
             def generate():
-                # Get the Wikipedia page for the question
-                page_content = get_wiki_page(question)
-                # Extract the relevant data
-                extracted_data = yield from extract_data(page_content)
-                # yield str(extracted_data)
-                # print(extracted_data)
+                if model != "chatgpt":
+                    # Get the Wikipedia page for the question
+                    page_content = get_wiki_page(question)
+                    # Extract the relevant data
+                    extracted_data = yield from extract_data(page_content)
+                    # yield str(extracted_data)
+                    # print(extracted_data)
 
-                # Answer the user's question
-                answer = yield from answer_question(question, extracted_data)
+                    # Answer the user's question
+                    answer = yield from answer_question(question, extracted_data)
 
-                # ts stores the time in seconds
-                ts = datetime.datetime.now()
+                    # ts stores the time in seconds
+                    ts = datetime.datetime.now()
 
-                history.insert_one(
-                    {'question': question, 'answer': answer, 'ts': ts, 'thread': thread})
+                    history.insert_one(
+                        {'question': question, 'answer': answer, 'ts': ts, 'thread': thread})
+                else:
+                    # TODO: chatgpt api
+                    return
 
             response = Response(stream_with_context(
                 generate()), content_type='text/event-stream', mimetype='text/plain')
