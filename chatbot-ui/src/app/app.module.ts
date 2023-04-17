@@ -18,10 +18,14 @@ import { NewchatDialogComponent } from './newchat-dialog/newchat-dialog.componen
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRippleModule } from '@angular/material/core';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { UserSignupComponent } from './user-signup/user-signup.component';
 @NgModule({
   declarations: [
     AppComponent,
-    NewchatDialogComponent
+    NewchatDialogComponent,
+    UserLoginComponent,
+    UserSignupComponent
   ],
   imports: [
     BrowserModule,
