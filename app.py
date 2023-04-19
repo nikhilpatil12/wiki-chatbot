@@ -9,6 +9,7 @@ import spacy
 import datetime
 import random
 from flask_cors import CORS
+import bcrypt
 
 # Load Spacy NER
 nlp = spacy.load('en_core_web_sm')
@@ -24,6 +25,7 @@ client = MongoClient('localhost', 27017)
 
 db = client.chatbot
 history = db.history
+users = db.users
 
 errors = ["404: Answer not found.",  "I'm sorry, Dave. I'm afraid I can't do that.",  "To be or not to be, that is the question... that I can't answer.",  "I'm stumped. Can we talk about something else?",  "Hmm, let me consult my Magic 8 Ball... 'Reply hazy, try again'.",  "I'm at a loss for words. How about we change the subject?",  "I think I need a coffee break. Let's chat later.",  "The answer is blowing in the wind... but I don't know what it is.",  "I'm afraid I don't have a clue. Maybe Google does?",  "You got me. I have no idea. How about a joke instead?",
           "Sorry, I'm not programmed to answer that.",  "I'm not sure what you're asking. Can you try rephrasing the question?",  "I'm afraid I'm not qualified to answer that.",  "The answer is somewhere over the rainbow... but not in my database.",  "I'm afraid that's classified information.",  "I'm sorry, my crystal ball is currently out of order.",  "The answer eludes me. Maybe you have a better idea?",  "I'm as clueless as a fish out of water.",  "Hmm, that's a tough one. Let me think...",  "I'm afraid I can't answer that without a lawyer present."]
@@ -221,6 +223,106 @@ def hist():
     response = jsonify(chatdict)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
+
+@app.route('/api/signup', methods=['POST', 'OPTIONS'])
+def answer():
+    try:
+        if request.method == 'OPTIONS':
+            response = Response()
+            response.headers.add(
+                'Access-Control-Allow-Origin', '*')
+            response.headers.add(
+                'Access-Control-Allow-Methods', 'POST, OPTIONS')
+            response.headers.add(
+                'Access-Control-Allow-Headers', 'Content-Type')
+            return response
+        if request.method == 'POST':
+            # Get the user's question from the request body
+            data = request.json
+            fname = data['fname']
+            lname = data['lname']
+            email = data['email']
+            password = data['password']
+            hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
+            users.insert_one({'fname': fname, 'lname': lname,
+                             'email': email, 'password': hashed_password})
+            response = Response(
+                data, content_type='text/event-stream', mimetype='text/plain')
+            response.headers.add('Access-Control-Allow-Origin',
+                                 '*')
+            response.headers.add('Transfer-Encoding', 'chunked')
+            response.status_code = 200
+            response.direct_passthrough = True
+            response.headers.add(
+                'Access-Control-Allow-Methods', 'POST, OPTIONS')
+            response.headers.add(
+                'Access-Control-Allow-Headers', 'Content-Type')
+            return response
+
+    except:
+        response = jsonify(
+            {'error': "Something Went wrong", })
+        response.headers.add('Access-Control-Allow-Origin',
+                             '*')
+        return response
+
+
+@app.route('/api/login', methods=['POST', 'OPTIONS'])
+def answer():
+    try:
+        if request.method == 'OPTIONS':
+            response = Response()
+            response.headers.add(
+                'Access-Control-Allow-Origin', '*')
+            response.headers.add(
+                'Access-Control-Allow-Methods', 'POST, OPTIONS')
+            response.headers.add(
+                'Access-Control-Allow-Headers', 'Content-Type')
+            return response
+        if request.method == 'POST':
+            # Get the user's question from the request body
+            data = request.json
+            email = data['email']
+            password = data['password']
+            query = {"email": email}
+            cursor = users.find(query)
+
+            if(bcrypt.checkpw(password, cursor.password)):
+                response = Response(
+                    email, content_type='text/event-stream', mimetype='text/plain')
+
+                response.headers.add('Access-Control-Allow-Origin',
+                                     '*')
+                response.headers.add('Transfer-Encoding', 'chunked')
+                response.status_code = 200
+                response.direct_passthrough = True
+                response.headers.add(
+                    'Access-Control-Allow-Methods', 'POST, OPTIONS')
+                response.headers.add(
+                    'Access-Control-Allow-Headers', 'Content-Type')
+                return response
+            else:
+                response = Response(
+                    "", content_type='text/event-stream', mimetype='text/plain')
+
+                response.headers.add('Access-Control-Allow-Origin',
+                                     '*')
+                response.headers.add('Transfer-Encoding', 'chunked')
+                response.status_code = 200
+                response.direct_passthrough = True
+                response.headers.add(
+                    'Access-Control-Allow-Methods', 'POST, OPTIONS')
+                response.headers.add(
+                    'Access-Control-Allow-Headers', 'Content-Type')
+                return response
+    except:
+        response = jsonify(
+            {'error': "Something Went wrong", })
+        response.headers.add('Access-Control-Allow-Origin',
+                             '*')
+        return response
 
 
 def arrange_by_thread(chat_list):

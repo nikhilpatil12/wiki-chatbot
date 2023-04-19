@@ -19,13 +19,16 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRippleModule } from '@angular/material/core';
 import { UserLoginComponent } from './user-login/user-login.component';
-import { UserSignupComponent } from './user-signup/user-signup.component';
+import { RouterModule } from '@angular/router';
+import { ChatComponent } from './chat/chat.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatGridListModule } from '@angular/material/grid-list';
 @NgModule({
   declarations: [
     AppComponent,
     NewchatDialogComponent,
     UserLoginComponent,
-    UserSignupComponent
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,13 @@ import { UserSignupComponent } from './user-signup/user-signup.component';
     MatFormFieldModule,
     MatListModule,
     MatDividerModule,
-    MatRippleModule
+    MatRippleModule,
+    MatTabsModule,
+    MatGridListModule,
+    RouterModule.forRoot([
+      { path: 'login', component: UserLoginComponent },
+      { path: 'chat', component: ChatComponent },
+    ]),
   ],
   providers: [
   ],

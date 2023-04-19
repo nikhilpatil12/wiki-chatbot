@@ -1,0 +1,40 @@
+.login-signup-card {
+    /* width: 40%; */
+    margin: 0 auto;
+    align-items: center;
+    height: 100%;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.tabs {
+    padding: 50px;
+    width: 40%;
+    margin-top: 200px;
+}
+
+.loginitems {
+    width: 80%;
+}
+
+.signupitems {
+    width: 80%;
+}
+
+.signupitemssmall {
+    width: 38%;
+    padding: 2%;
+}
+
+@media only screen and (max-width: 480px) {
+
+    /* Styles for smartphones */
+    .tabs {
+        padding: 50px;
+        width: 90%;
+        margin-top: 200px;
+    }
+}
