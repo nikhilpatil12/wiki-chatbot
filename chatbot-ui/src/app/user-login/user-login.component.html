@@ -6,7 +6,7 @@
                     <mat-grid-tile>
                         <mat-form-field class="loginitems" appearance="outline">
                             <mat-label>Email</mat-label>
-                            <input type="email" matInput placeholder="Email">
+                            <input [(ngModel)]=this.loginemail type="email" matInput placeholder="Email">
                             <mat-icon matSuffix>mail</mat-icon>
                             <mat-hint>Email</mat-hint>
                         </mat-form-field>
@@ -14,7 +14,7 @@
                     <mat-grid-tile>
                         <mat-form-field class="loginitems" appearance="outline">
                             <mat-label>Password</mat-label>
-                            <input type="password" matInput placeholder="Password">
+                            <input [(ngModel)]=this.loginpassword type="password" matInput placeholder="Password">
                             <mat-icon matSuffix>password</mat-icon>
                             <mat-hint>Password</mat-hint>
                         </mat-form-field>
@@ -30,13 +30,13 @@
                     <mat-grid-tile>
                         <mat-form-field class="signupitemssmall" appearance="outline">
                             <mat-label>First Name</mat-label>
-                            <input matInput placeholder="First Name">
+                            <input [(ngModel)]=this.fname matInput placeholder="First Name">
                             <mat-icon matSuffix>person</mat-icon>
                             <mat-hint>First Name</mat-hint>
                         </mat-form-field>
                         <mat-form-field class="signupitemssmall" appearance="outline">
                             <mat-label>Last Name</mat-label>
-                            <input matInput placeholder="Last Name">
+                            <input [(ngModel)]=this.lname matInput placeholder="Last Name">
                             <mat-icon matSuffix>person</mat-icon>
                             <mat-hint>Last Name</mat-hint>
                         </mat-form-field>
@@ -44,7 +44,7 @@
                     <mat-grid-tile>
                         <mat-form-field class="signupitems" appearance="outline">
                             <mat-label>Email</mat-label>
-                            <input type="email" matInput placeholder="Email">
+                            <input [(ngModel)]=this.email type="email" matInput placeholder="Email">
                             <mat-icon matSuffix>mail</mat-icon>
                             <mat-hint>Email</mat-hint>
                         </mat-form-field>
@@ -53,7 +53,7 @@
                     <mat-grid-tile>
                         <mat-form-field class="signupitems" appearance="outline">
                             <mat-label>Password</mat-label>
-                            <input type="password" matInput placeholder="Password">
+                            <input [(ngModel)]=this.password1 type="password" matInput placeholder="Password">
                             <mat-icon matSuffix>password</mat-icon>
                             <mat-hint>Password</mat-hint>
                         </mat-form-field>
@@ -61,13 +61,13 @@
                     <mat-grid-tile>
                         <mat-form-field class="signupitems" appearance="outline">
                             <mat-label>Confirm Password</mat-label>
-                            <input type="password" matInput placeholder="Password">
+                            <input [(ngModel)]=this.password2 type="password" matInput placeholder="Password">
                             <mat-icon matSuffix>password</mat-icon>
                             <mat-hint>Confirm Password</mat-hint>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile>
-                        <button (click)="signup" mat-flat-button color="primary">Signup</button>
+                        <button (click)="signup" class="loginitems" mat-flat-button color="primary">Signup</button>
                     </mat-grid-tile>
                 </mat-grid-list>
             </mat-tab>

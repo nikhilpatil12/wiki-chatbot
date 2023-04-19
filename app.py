@@ -226,7 +226,7 @@ def hist():
 
 
 @app.route('/api/signup', methods=['POST', 'OPTIONS'])
-def answer():
+def signup():
     try:
         if request.method == 'OPTIONS':
             response = Response()
@@ -270,7 +270,7 @@ def answer():
 
 
 @app.route('/api/login', methods=['POST', 'OPTIONS'])
-def answer():
+def login():
     try:
         if request.method == 'OPTIONS':
             response = Response()
