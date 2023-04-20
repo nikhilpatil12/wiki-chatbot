@@ -23,6 +23,7 @@ import { RouterModule } from '@angular/router';
 import { ChatComponent } from './chat/chat.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +49,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatRippleModule,
     MatTabsModule,
     MatGridListModule,
+    MatSnackBarModule,
     RouterModule.forRoot([
       { path: 'login', component: UserLoginComponent },
       { path: 'chat', component: ChatComponent },

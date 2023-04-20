@@ -2,6 +2,7 @@ import { Component, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-login',
@@ -18,15 +19,41 @@ export class UserLoginComponent {
   public password2 = '';
   public loginpassword = '';
   public loginemail = '';
-  constructor(private http: HttpClient) { }
-  login = () => {
-    const data = { "email": this.loginpassword, "password": this.loginemail };
+  constructor(private http: HttpClient, private router: Router) { }
+
+  callLoginApi = (): Observable<any> => {
+    const data = { "email": this.loginemail, "password": this.loginpassword };
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post<any>(`${this.url}/login`, data, { headers });
+    return this.http.post<any>(`${this.url}/api/login`, data, { headers });
   }
-  signup = () => {
-    const data = { "fname": this.fname, "lname": this.lname, "email": this.password1, "password": this.email };
+
+  callSignupApi = (): Observable<any> => {
+    const data = { "fname": this.fname, "lname": this.lname, "email": this.email, "password": this.password1 };
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post<any>(`${this.url}/signup`, data, { headers });
+    return this.http.post<any>(`${this.url}/api/signup`, data, { headers });
+  }
+
+  userLogin = () => {
+    console.log("Calling login API")
+    this.callLoginApi().subscribe(
+      n => {
+        // console.log(n);
+        if (n.error)
+          console.error(n.error);
+        if (n.success) {
+          localStorage.setItem("user_login", n.user);
+          this.router.navigate(['/chat'])
+        } else {
+          localStorage.setItem("user_login", '');
+          console.error(n.message);
+        }
+      },
+    )
+  }
+
+  userSignup = () => {
+    this.callSignupApi().subscribe(
+      x => console.log(x),
+    )
   }
 }

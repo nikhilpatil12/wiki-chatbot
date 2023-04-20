@@ -20,7 +20,7 @@
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile>
-                        <button (click)="login" mat-flat-button color="primary" class="loginitems">Login</button>
+                        <button (click)="userLogin()" mat-flat-button color="primary" class="loginitems">Login</button>
 
                     </mat-grid-tile>
                 </mat-grid-list>
@@ -67,7 +67,8 @@
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile>
-                        <button (click)="signup" class="loginitems" mat-flat-button color="primary">Signup</button>
+                        <button (click)="userSignup()" class="loginitems" mat-flat-button
+                            color="primary">Signup</button>
                     </mat-grid-tile>
                 </mat-grid-list>
             </mat-tab>

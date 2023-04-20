@@ -240,28 +240,33 @@ def signup():
         if request.method == 'POST':
             # Get the user's question from the request body
             data = request.json
+            print(data)
             fname = data['fname']
+            print(fname)
             lname = data['lname']
+            print(lname)
             email = data['email']
+            print(email)
             password = data['password']
-            hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
-
+            print(password)
+            hashed_password = bcrypt.hashpw(
+                password.encode('utf-8'), bcrypt.gensalt())
+            print(hashed_password)
             users.insert_one({'fname': fname, 'lname': lname,
                              'email': email, 'password': hashed_password})
-            response = Response(
-                data, content_type='text/event-stream', mimetype='text/plain')
-            response.headers.add('Access-Control-Allow-Origin',
-                                 '*')
-            response.headers.add('Transfer-Encoding', 'chunked')
-            response.status_code = 200
-            response.direct_passthrough = True
-            response.headers.add(
-                'Access-Control-Allow-Methods', 'POST, OPTIONS')
-            response.headers.add(
-                'Access-Control-Allow-Headers', 'Content-Type')
-            return response
+            # response = Response(
+            #     data)
+            # response.headers.add('Access-Control-Allow-Origin',
+            #                      '*')
+            # response.status_code = 200
+            # response.headers.add(
+            #     'Access-Control-Allow-Methods', 'POST, OPTIONS')
+            # response.headers.add(
+            #     'Access-Control-Allow-Headers', 'Content-Type')
+            return jsonify({'success': True, 'message': 'Signup successful!'})
 
     except:
+        print("Error")
         response = jsonify(
             {'error': "Something Went wrong", })
         response.headers.add('Access-Control-Allow-Origin',
@@ -285,38 +290,25 @@ def login():
             # Get the user's question from the request body
             data = request.json
             email = data['email']
+            print(email)
             password = data['password']
+            print(password)
             query = {"email": email}
+            print(query)
             cursor = users.find(query)
-
-            if(bcrypt.checkpw(password, cursor.password)):
-                response = Response(
-                    email, content_type='text/event-stream', mimetype='text/plain')
-
-                response.headers.add('Access-Control-Allow-Origin',
-                                     '*')
-                response.headers.add('Transfer-Encoding', 'chunked')
-                response.status_code = 200
-                response.direct_passthrough = True
-                response.headers.add(
-                    'Access-Control-Allow-Methods', 'POST, OPTIONS')
-                response.headers.add(
-                    'Access-Control-Allow-Headers', 'Content-Type')
-                return response
-            else:
-                response = Response(
-                    "", content_type='text/event-stream', mimetype='text/plain')
-
-                response.headers.add('Access-Control-Allow-Origin',
-                                     '*')
-                response.headers.add('Transfer-Encoding', 'chunked')
-                response.status_code = 200
-                response.direct_passthrough = True
-                response.headers.add(
-                    'Access-Control-Allow-Methods', 'POST, OPTIONS')
-                response.headers.add(
-                    'Access-Control-Allow-Headers', 'Content-Type')
-                return response
+            for c in cursor:
+                print(c)
+                print(c["password"])
+                print(bcrypt.checkpw(password.encode('utf-8'), c["password"]))
+                if(bcrypt.checkpw(password.encode('utf-8'), c["password"])):
+                    print(email)
+                    loginresp = jsonify(
+                        {'success': True, 'message': 'Login successful!', 'user': email})
+                    return loginresp
+                else:
+                    loginresp = jsonify(
+                        {'success': False, 'message': 'Login ussuccessful!', 'reason': "User not found!"})
+                    return loginresp
     except:
         response = jsonify(
             {'error': "Something Went wrong", })
