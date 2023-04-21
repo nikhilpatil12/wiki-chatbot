@@ -140,5 +140,9 @@ export class ChatComponent {
     });
     return result;
   }
-
+  public userLogout = () => {
+    console.log("Logout")
+    localStorage.removeItem("user_login");
+    this.router.navigate(['/login'])
+  }
 }

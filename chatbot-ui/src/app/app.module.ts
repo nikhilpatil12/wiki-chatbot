@@ -24,6 +24,7 @@ import { ChatComponent } from './chat/chat.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +51,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatTabsModule,
     MatGridListModule,
     MatSnackBarModule,
+    MatSelectModule,
     RouterModule.forRoot([
       { path: 'login', component: UserLoginComponent },
       { path: 'chat', component: ChatComponent },

@@ -5,6 +5,20 @@
         </button>
         <span>Wiki Chatbot</span>
         <span class="spacer"></span>
+        <mat-form-field appearance="fill" class="apiselector">
+            <mat-label>API</mat-label>
+            <mat-select [value]="'wikibot'">
+                <mat-option value="wikibot">
+                    WikiBot API
+                </mat-option>
+                <mat-option value="chatgpt">
+                    ChatGPT API
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button (click)="userLogout()" mat-button>
+            <mat-icon aria-hidden="false" aria-label="Logout" fontIcon="logout"></mat-icon>
+        </button>
     </mat-toolbar>
 
     <mat-sidenav-container class="main-container">
@@ -30,9 +44,6 @@
                         </div>
                     </mat-list>
                 </div>
-                <!-- TODO: Harika: Add ChatGPT dropdown -->
-
-
             </div>
             <div class="chat_history">
 

@@ -137,3 +137,7 @@ li {
     /* background-color: blueviolet; */
     overflow: auto;
 }
+
+.apiselector {
+    padding: 12px;
+}
