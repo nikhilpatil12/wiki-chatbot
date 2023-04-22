@@ -10,7 +10,10 @@ import datetime
 import random
 from flask_cors import CORS
 import bcrypt
-
+import openai
+from key import OPENAI_API_KEY
+openai.organization = "org-O0EuSUECzQKgULsX7tVYOsy7"
+openai.api_key = OPENAI_API_KEY
 # Load Spacy NER
 nlp = spacy.load('en_core_web_sm')
 nltk.download('stopwords')
@@ -155,10 +158,11 @@ def answer():
             question = data['question']
             model = data['model']
             thread = data['thread']
+            user = data['user']
             # Stream extracted data from extract_data()
 
             def generate():
-                if model != "chatgpt":
+                if model == "wikibot":
                     # Get the Wikipedia page for the question
                     page_content = get_wiki_page(question)
                     # Extract the relevant data
@@ -173,11 +177,19 @@ def answer():
                     ts = datetime.datetime.now()
 
                     history.insert_one(
-                        {'question': question, 'answer': answer, 'ts': ts, 'thread': thread})
+                        {'question': question, 'answer': answer, 'ts': ts, 'thread': thread, 'user': user, 'model': model})
                 else:
-                    # TODO: chatgpt api
-                    return
+                    chatgptresponse = openai.ChatCompletion.create(
+                        model="gpt-3.5-turbo",
+                        messages=[{"role": "user", "content": question}],
+                        max_tokens=40
+                    )
+                    print(chatgptresponse)
+                    ts = datetime.datetime.now()
 
+                    history.insert_one(
+                        {'question': question, 'answer': chatgptresponse.choices[0].message.content, 'ts': ts, 'thread': thread, 'user': user, 'model': model})
+                    return jsonify(chatgptresponse)
             response = Response(stream_with_context(
                 generate()), content_type='text/event-stream', mimetype='text/plain')
             response.headers.add('Access-Control-Allow-Origin',

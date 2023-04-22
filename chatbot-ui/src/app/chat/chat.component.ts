@@ -28,6 +28,9 @@ export class ChatComponent {
   newQuestion: string | undefined;
   extractedData: string = '';
   pastdata: string = '';
+  model: string = 'wikibot'
+  loggedInUserEmail: string = ''
+
   constructor(protected http: HttpClient, public dialog: MatDialog, public router: Router) { }
   openNewChatDialog(): void {
     const dialogRef = this.dialog.open(NewchatDialogComponent, {
@@ -72,20 +75,23 @@ export class ChatComponent {
     req.open('POST', this.url + '/api/answer');
     req.setRequestHeader('Content-Type', 'application/json');
     req.responseType = 'text';
-    const data = { "question": this.newQuestion, "thread": this.currentThread };
+    const data = { "question": this.newQuestion, "thread": this.currentThread, "model": this.model, "user": this.loggedInUserEmail };
     req.onreadystatechange = function () {
+      console.log(this)
+      console.log(this.response)
       if (this.status === 200) {
         that.newQuestion = '';
         const response = this.responseText;
         that.extractedData = response + "<br>";
         console.log(that.extractedData);
+        console.log(this.responseText);
       }
     };
     req.addEventListener('load', () => {
       if (req.status >= 200 && req.status < 300) {
-        // this.extractedData += req.response;
         console.log('Stream completed');
-
+        if (that.model == "chatgpt")
+          console.log(req)
       } else {
         console.error(`Error streaming data: ${req.statusText}`);
       }
@@ -103,6 +109,9 @@ export class ChatComponent {
   }
 
   ngOnInit() {
+    var loginemail = localStorage.getItem("user_login");
+    if (loginemail)
+      this.loggedInUserEmail = loginemail;
     this.currentThread = "Default";
     interval(1000).subscribe(() => {
       this.getHistory();

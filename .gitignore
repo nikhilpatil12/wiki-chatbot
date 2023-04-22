@@ -42,3 +42,4 @@ chatbot-ui/typings
 .DS_Store
 Thumbs.db
 *.pyc
+key.py

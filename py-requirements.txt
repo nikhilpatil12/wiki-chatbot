@@ -6,3 +6,4 @@ spacy>=3.5.0
 flask-cors==3.0.10
 gunicorn
 bcrypt
+openai
