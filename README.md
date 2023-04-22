@@ -47,7 +47,7 @@ pip install -r py-requirements.txt
 python -m spacy download en_core_web_sm
 ```
 
-5. Rename "key_emaple.py" to "key.py" and place your OpenAI API Key there
+5. Rename "key_emaple.py" to "key.py" and place your OpenAI API Key and MongoDB credentials there
 6. Execute "python app.py" to run the backend dev server
 
 ```bash
