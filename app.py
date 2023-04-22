@@ -11,7 +11,7 @@ import random
 from flask_cors import CORS
 import bcrypt
 import openai
-from key import OPENAI_API_KEY
+from key import OPENAI_API_KEY, MONGODB_USERNAME, MONGODB_PASSWORD, MONGODB_AUTHSOURCE
 openai.organization = "org-O0EuSUECzQKgULsX7tVYOsy7"
 openai.api_key = OPENAI_API_KEY
 # Load Spacy NER
@@ -24,7 +24,8 @@ nltk.download('wordnet')
 app = Flask(__name__)
 CORS(app, origins=['*'])
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('localhost', 27017, username=MONGODB_USERNAME,
+                     password=MONGODB_PASSWORD, authSource=MONGODB_AUTHSOURCE)
 
 db = client.chatbot
 history = db.history
