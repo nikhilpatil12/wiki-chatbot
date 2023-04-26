@@ -183,7 +183,7 @@ def answer():
                     chatgptresponse = openai.ChatCompletion.create(
                         model="gpt-3.5-turbo",
                         messages=[{"role": "user", "content": question}],
-                        max_tokens=40
+                        max_tokens=80
                     )
                     print(chatgptresponse)
                     ts = datetime.datetime.now()
