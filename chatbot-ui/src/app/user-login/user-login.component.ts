@@ -57,3 +57,7 @@ export class UserLoginComponent {
     )
   }
 }
+//TODO: Add login error snackbar
+//TODO: Add signup error snackbar
+//TODO: Add login successful snackbar and spinner 
+//TODO: Add signup successful snackbar and spinner 
