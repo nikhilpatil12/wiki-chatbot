@@ -61,3 +61,5 @@ export class UserLoginComponent {
 //TODO: Add signup error snackbar
 //TODO: Add login successful snackbar and spinner 
 //TODO: Add signup successful snackbar and spinner 
+//TODO: Add email validation on signup and login
+//TODO: Add password validation on signup
