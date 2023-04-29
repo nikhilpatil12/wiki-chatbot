@@ -46,12 +46,13 @@
     } */
 }
 
+
 .lichat {
-    padding: 15px;
+    padding: 0;
     width: 100%;
     margin: 0;
     overflow: auto;
-    height: calc(100% - 114px);
+    height: calc(100% - 104px);
     top: 0;
 }
 
@@ -89,18 +90,16 @@
 
 .listChat {
     margin: 40px 0;
+    color: black;
 }
 
 .question {
     margin: 5px;
-    align-self: self-end;
-    align-content: end;
-    text-align: right;
     background-color: rgb(84, 255, 138);
     width: -moz-fit-content;
     width: fit-content;
     padding: 10px;
-    border-radius: 40px;
+    border-radius: 30px;
     display: block;
 }
 
@@ -110,15 +109,25 @@ li {
 
 .answer {
     margin: 5px;
-    align-self: self-start;
-    text-align: left;
     background-color: rgb(92, 143, 255);
     width: -moz-fit-content;
     width: fit-content;
     padding: 10px;
-    border-radius: 40px;
+    border-radius: 30px;
     margin-bottom: 0px;
 
+}
+
+.question div {
+    padding: 3px;
+}
+
+.answer div {
+    padding: 3px;
+}
+
+.ulchat {
+    padding: 5px 20px;
 }
 
 #stream_head {
@@ -140,4 +149,35 @@ li {
 
 .apiselector {
     padding: 12px;
+}
+
+.progress-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+    align-items: center;
+    height: 100%;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+}
+
+
+.progress-spinner {
+    margin: 0 auto;
+}
+
+.spinner-card {
+    display: block;
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 10%;
+    background-color: rgb(132, 132, 132);
+    border-radius: 10px;
+}
+
+#user-profile {
+    padding: 20px;
 }

@@ -10,6 +10,7 @@ import { NewchatDialogComponent } from '../newchat-dialog/newchat-dialog.compone
 import { MatDialog } from '@angular/material/dialog';
 import { ChatMessagesResponse } from '../ChatMessageResponse';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -19,7 +20,7 @@ export class ChatComponent {
 
   @ViewChild('answerHistory', { static: true })
   answerHistory!: ElementRef;
-
+  inprogress = false;
   chatMessages: ChatMessage[] = [];
   chatThreads: ChatThread[] = [];
   newChatThread = false;
@@ -29,9 +30,9 @@ export class ChatComponent {
   extractedData: string = '';
   pastdata: string = '';
   model: string = 'wikibot'
-  loggedInUserEmail: string = ''
+  loggedInUser = { email: '', fullname: '' }
 
-  constructor(protected http: HttpClient, public dialog: MatDialog, public router: Router) { }
+  constructor(protected http: HttpClient, public dialog: MatDialog, public router: Router, public datePipe: DatePipe) { }
   openNewChatDialog(): void {
     const dialogRef = this.dialog.open(NewchatDialogComponent, {
       data: { name: this.chatname },
@@ -68,6 +69,7 @@ export class ChatComponent {
   }
 
   getAnswer() {
+    this.inprogress = true;
     const that = this;
     this.extractedData = ''
 
@@ -75,17 +77,18 @@ export class ChatComponent {
     req.open('POST', this.url + '/api/answer');
     req.setRequestHeader('Content-Type', 'application/json');
     req.responseType = 'text';
-    const data = { "question": this.newQuestion, "thread": this.currentThread, "model": this.model, "user": this.loggedInUserEmail };
+    const data = { "question": this.newQuestion, "thread": this.currentThread, "model": this.model, "user": this.loggedInUser.email };
     req.onreadystatechange = function () {
       console.log(this)
       console.log(this.response)
       if (this.status === 200) {
         that.newQuestion = '';
         const response = this.responseText;
-        that.extractedData = response + "<br>";
+        that.extractedData = response == "" ? "" : response + "<br>";
         console.log(that.extractedData);
         console.log(this.responseText);
       }
+      that.inprogress = false;
     };
     req.addEventListener('load', () => {
       if (req.status >= 200 && req.status < 300) {
@@ -95,6 +98,7 @@ export class ChatComponent {
       } else {
         console.error(`Error streaming data: ${req.statusText}`);
       }
+      that.inprogress = false;
     });
 
     req.addEventListener('error', () => {
@@ -109,16 +113,16 @@ export class ChatComponent {
   }
 
   ngOnInit() {
-    var loginemail = localStorage.getItem("user_login");
-    if (loginemail)
-      this.loggedInUserEmail = loginemail;
+    var loggedinuser = localStorage.getItem("user_login");
+    if (loggedinuser)
+      this.loggedInUser = JSON.parse(loggedinuser);
     this.currentThread = "Default";
     interval(1000).subscribe(() => {
-      this.getHistory();
+      this.getHistory(this.loggedInUser.email);
     });
   }
-  public getHistory = () => {
-    this.http.get<ChatMessagesResponse>(this.url + '/api/history').subscribe(data => {
+  public getHistory = (queryUser: string) => {
+    this.http.get<ChatMessagesResponse>(this.url + '/api/history?user=' + queryUser).subscribe(data => {
       console.log(data)
       // this.messages = data;
       const groupedMessages = this.groupByThread(data);

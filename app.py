@@ -220,20 +220,31 @@ def answer():
 
 @app.route('/api/history', methods=['GET'])
 def hist():
-    chat_history = history.find()
+    # chat_history = history.find()
     ch = []
+    user = request.args.get('user')
+    query = {"user": user}
+    print(query)
+    chat_history = history.find(query)
+
     for chat in chat_history:
         thread = "Default"
         if 'thread' in chat:
             if chat['thread'] != "":
                 thread = chat['thread']
+        model = 'wikibot'
+        if 'model' in chat:
+            if chat['model'] != "":
+                model = chat['model']
 
         ch.append({'question': chat['question'],
                   'answer': chat['answer'],
                    'ts': chat['ts'],
+                   'model': model,
                    'thread': thread})
     chatdict = arrange_by_thread(ch)
     response = jsonify(chatdict)
+    print(chatdict)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -328,7 +339,7 @@ def login():
                 if(bcrypt.checkpw(password.encode('utf-8'), c["password"])):
                     print(email)
                     loginresp = jsonify(
-                        {'success': True, 'message': 'Login successful!', 'user': email})
+                        {'success': True, 'message': 'Login successful!', 'user': {'email': email, 'fullname': c["fname"] + " "+c["lname"]}})
                     return loginresp
                 else:
                     loginresp = jsonify(
@@ -352,7 +363,8 @@ def arrange_by_thread(chat_list):
         chat_dict[thread].append({
             'question': chat['question'],
             'answer': chat['answer'],
-            'ts': chat['ts']
+            'ts': chat['ts'],
+            'model': chat['model']
         })
     return chat_dict
 

@@ -3,5 +3,6 @@ export interface ChatMessage {
     question: string;
     answer: string;
     thread: string;
+    model: string;
     ts: Date;
 }

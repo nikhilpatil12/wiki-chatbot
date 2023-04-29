@@ -27,6 +27,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,12 +58,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSelectModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatMenuModule,
     RouterModule.forRoot([
       { path: 'login', component: UserLoginComponent },
       { path: 'chat', component: ChatComponent },
     ]),
   ],
   providers: [
+    DatePipe,
   ],
   bootstrap: [AppComponent]
 })

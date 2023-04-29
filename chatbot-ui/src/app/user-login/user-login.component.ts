@@ -58,7 +58,7 @@ export class UserLoginComponent {
         if (n.error)
           console.error(n.error);
         if (n.success) {
-          localStorage.setItem("user_login", n.user);
+          localStorage.setItem("user_login", JSON.stringify(n.user));
           this.router.navigate(['/chat'])
         } else {
           localStorage.setItem("user_login", '');

@@ -1,5 +1,5 @@
 <ng-container class="container" fullscreen>
-    <mat-toolbar color="primary">
+    <mat-toolbar color="secondary">
         <button (click)=sidenav.toggle() mat-icon-button class="icon" aria-label="Icon-button with menu icon">
             <mat-icon>menu</mat-icon>
         </button>
@@ -16,9 +16,23 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button (click)="userLogout()" mat-button>
-            <mat-icon aria-hidden="false" aria-label="Logout" fontIcon="logout"></mat-icon>
+        <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>account_circle</mat-icon>
         </button>
+        <mat-menu #menu="matMenu">
+            <mat-card>
+                <mat-card-content>
+                    {{this.loggedInUser.fullname}}
+                    <br>
+                    {{this.loggedInUser.email}}
+                </mat-card-content>
+                <mat-card-actions>
+                    <button (click)="userLogout()" mat-button>
+                        <mat-icon>logout</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-menu>
     </mat-toolbar>
 
     <mat-sidenav-container class="main-container">
@@ -61,7 +75,7 @@
                 </mat-card>
                 <!-- <div id="stream_head">
   
-          </div> -->
+                 </div> -->
                 <div id="stream">
                     {{extractedData}}
                 </div>
@@ -72,16 +86,17 @@
         <mat-sidenav-content>
             <div class="sidenav-content chatwindow">
                 <div class="row lichat" #answerHistory>
-                    <ul>
+                    <ul class="ulchat">
                         <li *ngFor="let message of chatMessages" class="listChat">
-                            <span>{{ message.ts }}<br></span>
-                            You
+                            <!-- You -->
                             <div class="question">
-                                <span>{{ message.question }}</span>
+                                <div>{{ this.datePipe.transform(message.ts.toLocaleString(), 'EEE MMM dd h:mm a') }}
+                                </div><br>
+                                <div>{{ message.question }}</div>
                             </div>
-                            WikiBot
                             <div class="answer">
-                                <span>{{ message.answer }}</span>
+                                <div>{{ message.model == 'wikibot' ? "WikiBot" : "GPT3.5"}}</div><br>
+                                <div>{{ message.answer}}</div>
                             </div>
                         </li>
                     </ul>
@@ -99,4 +114,14 @@
             </div>
         </mat-sidenav-content>
     </mat-sidenav-container>
+
+    <div class="progress-card" *ngIf="inprogress">
+        <div class="spinner-card">
+            <mat-card-content>
+                <h2>In progress...</h2>
+                <mat-progress-spinner class="progress-spinner" [color]='"accent"' [mode]='"indeterminate"'>
+                </mat-progress-spinner>
+            </mat-card-content>
+        </div>
+    </div>
 </ng-container>
