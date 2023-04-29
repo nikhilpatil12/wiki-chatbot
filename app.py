@@ -320,8 +320,9 @@ def login():
                     return loginresp
                 else:
                     loginresp = jsonify(
-                        {'success': False, 'message': 'Login ussuccessful!', 'reason': "User not found!"})
+                        {'success': False, 'message': 'Login ussuccessful!', 'reason': "Wrong password!"})
                     return loginresp
+            return jsonify({'success': False, 'message': 'Login ussuccessful!', 'reason': "User not found"})
     except:
         response = jsonify(
             {'error': "Something Went wrong", })
