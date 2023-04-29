@@ -112,12 +112,13 @@
         </mat-tab-group>
     </mat-card>
 
-    <mat-card class="example-card">
-        <mat-card-content>
-            <h2 class="example-h2">Result</h2>
-
-            <mat-progress-spinner *ngIf="inprogress" class="progress-spinner" primary [mode]='"indeterminate"'>
-            </mat-progress-spinner>
-        </mat-card-content>
-    </mat-card>
+    <div class="login-progress-card" *ngIf="inprogress">
+        <div class="spinner-card">
+            <mat-card-content>
+                <h2>In progress...</h2>
+                <mat-progress-spinner class="progress-spinner" [color]='"accent"' [mode]='"indeterminate"'>
+                </mat-progress-spinner>
+            </mat-card-content>
+        </div>
+    </div>
 </div>
