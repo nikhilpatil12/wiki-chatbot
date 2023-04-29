@@ -265,6 +265,18 @@ def signup():
             hashed_password = bcrypt.hashpw(
                 password.encode('utf-8'), bcrypt.gensalt())
             print(hashed_password)
+
+            query = {"email": email}
+            print(query)
+            cursor = users.find(query)
+            for c in cursor:
+                print(c)
+                print(bcrypt.checkpw(password.encode('utf-8'), c["password"]))
+                if(bcrypt.checkpw(password.encode('utf-8'), c["password"])):
+                    print(email)
+                    loginresp = jsonify(
+                        {'success': False, 'message': 'User already exists!', 'user': email})
+                    return loginresp
             users.insert_one({'fname': fname, 'lname': lname,
                              'email': email, 'password': hashed_password})
             # response = Response(

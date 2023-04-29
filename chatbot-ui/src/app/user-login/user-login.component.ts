@@ -79,6 +79,10 @@ export class UserLoginComponent {
         if (x.success == true) {
           this.openSnackBar("Signup Successful, Continue to Login", "Okay");
         }
+        else {
+          this.openSnackBar(x.message, "Okay");
+
+        }
         this.inprogress = false;
       },
     )
