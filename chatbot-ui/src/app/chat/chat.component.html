@@ -59,23 +59,18 @@
                     </mat-list>
                 </div>
             </div>
-            <div class="chat_history">
-
-            </div>
         </mat-sidenav>
         <mat-sidenav *ngIf="extractedData" #sidenav2 class="sidenav2" mode="side" opened position="end">
             <div class="question_stats">
                 <mat-card>
-                    <mat-card-content>
+                    <mat-card-actions>
                         <h2>Question Stats</h2>
-                        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+                        <button (click)="this.extractedData=''" mat-icon-button color="primary"
+                            aria-label="Example icon button with a home icon">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </mat-card-content>
+                    </mat-card-actions>
                 </mat-card>
-                <!-- <div id="stream_head">
-  
-                 </div> -->
                 <div id="stream">
                     {{extractedData}}
                 </div>

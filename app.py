@@ -168,9 +168,6 @@ def answer():
                     page_content = get_wiki_page(question)
                     # Extract the relevant data
                     extracted_data = yield from extract_data(page_content)
-                    # yield str(extracted_data)
-                    # print(extracted_data)
-
                     # Answer the user's question
                     answer = yield from answer_question(question, extracted_data)
 
