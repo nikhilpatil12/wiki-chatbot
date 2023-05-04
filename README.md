@@ -23,7 +23,7 @@ This chatbot is built using a combination of several technologies to create a ro
 
 ### Executing program
 
-1. Clone this repository
+1. Clone this repository 
 
 ```bash
 git clone https://github.com/nikhilpatil12/wiki-chatbot
