@@ -46,7 +46,7 @@ def preprocess(question):
     print("filtered_tokens")
     return filtered_tokens
 
-# Retrieve the Wikipedia page for the given question
+# For the given question retrieve the Wikipedia page
 
 
 def get_wiki_page(question):
