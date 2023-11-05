@@ -83,7 +83,6 @@ ng serve -o
 
 - Nikhil Patil
 - [@nikhilpatil12](https://www.linkedin.com/in/nikhilpatil12/)
--Harika Kolli
 
 
 ## Version History
