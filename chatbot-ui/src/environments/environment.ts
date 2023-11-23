@@ -1,5 +1,4 @@
 export const environment = {
-    production: true,
-    apiUrl: 'https://oci.nikpatil.com'
-  };
-  
+  production: true,
+  apiUrl: 'https://wikichatapi.nikpatil.com'
+};
