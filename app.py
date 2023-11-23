@@ -27,7 +27,22 @@ CORS(app, origins=['*'])
 client = MongoClient(MONGODB_ADDRESS, MONGODB_PORT, username=MONGODB_USERNAME,
                      password=MONGODB_PASSWORD, authSource=MONGODB_AUTHSOURCE)
 
+if 'chatbot' not in client.list_database_names():
+    # Create the 'chatbot' database
+    client.chatbot
+
 db = client.chatbot
+
+# Check if 'history' collection exists in 'chatbot' database
+if 'history' not in db.list_collection_names():
+    # Create 'history' collection
+    db.create_collection('history')
+
+# Check if 'users' collection exists in 'chatbot' database
+if 'users' not in db.list_collection_names():
+    # Create 'users' collection
+    db.create_collection('users')
+    
 history = db.history
 users = db.users
 
