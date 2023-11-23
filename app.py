@@ -193,7 +193,7 @@ def answer():
                     history.insert_one(
                         {'question': question, 'answer': answer, 'ts': ts, 'thread': thread, 'user': user, 'model': model})
                 else:
-                    chatgptresponse = openai.ChatCompletion.create(
+                    chatgptresponse = openai.chat.completions.create(
                         model="gpt-3.5-turbo",
                         messages=[{"role": "user", "content": question}],
                         max_tokens=80
