@@ -10,10 +10,11 @@ import datetime
 import random
 from flask_cors import CORS
 import bcrypt
-import openai
+from openai import OpenAI
 from key import OPENAI_API_KEY, MONGODB_USERNAME, MONGODB_PASSWORD, MONGODB_AUTHSOURCE, MONGODB_ADDRESS, MONGODB_PORT
-openai.organization = "org-O0EuSUECzQKgULsX7tVYOsy7"
-openai.api_key = OPENAI_API_KEY
+
+
+openai = OpenAI(api_key= OPENAI_API_KEY,)
 # Load Spacy NER
 nlp = spacy.load('en_core_web_sm')
 nltk.download('stopwords')
