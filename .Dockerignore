@@ -1,2 +1,4 @@
 chatbot-ui
 *.gz
+.*
+__*
