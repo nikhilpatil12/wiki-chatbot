@@ -18,7 +18,7 @@ WORKDIR /app/wiki-chatbot
 RUN pip install -r py-requirements.txt
 
 # Install en_core_web_sm model
-RUN python -m spacy download en_core_web_sm
+RUN python3 -m spacy download en_core_web_sm
 
 # Command to start the backend dev server with gunicorn
 CMD ["gunicorn", "wsgi:app", "-b", "0.0.0.0:8000", "--timeout", "300", "--log-level=debug"]
