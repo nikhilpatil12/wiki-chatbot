@@ -1,3 +1,5 @@
+# This dockerfile is for API, and not for the Angular frontend
+
 # Use an official Ubuntu image as a parent image
 FROM ubuntu:latest
 
